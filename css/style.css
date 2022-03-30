@@ -1,0 +1,21 @@
+.container-full {
+  margin: 0 auto;
+  width: 90%;
+}
+
+body {
+	background-color: #e7e7e7;
+}
+
+.timeline {
+	background-color: #ffffff;
+}
+
+.table {
+	background-color: #ffffff;
+}
+
+a {
+	text-decoration: none;
+	color: #000000;
+}
