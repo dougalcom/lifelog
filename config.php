@@ -1,7 +1,6 @@
 <?
 // THE PASSWORD
-$passhash = "ffffba25c40b25f27195ea85f58b304b"; // the real password for production
-//$passhash = "e6c4fc83d16803db2195056611fe3578"; // 'dougalwalker' for testing
+$passhash = "";
  
 // App base URL
 $baseURL = "http://log.oridou.com/";
