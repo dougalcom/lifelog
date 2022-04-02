@@ -3,7 +3,7 @@
 $passhash = "";
  
 // App base URL
-$baseURL = "http://log.oridou.com/";
+$baseURL = "#";
 
 // DB link setup
 $link = mysql_connect("localhost","username","password");
