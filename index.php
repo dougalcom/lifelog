@@ -1,31 +1,5 @@
 <?
 
-/*
-Life log project began May 17, 2015
-May 21 - set up security, list of items below the timeline, CRUD framework
-May 22 - set up log.oridou.com, cleaned up code and broke up into modules/
-May 24 - integrated CRUD stuff into the main program
-May 25 - implemented new login form screen, added logout button, simplified menu & style, built 2-col input form, colored mood buttons, implemented modal detail windows, built in edit function
-may 26 - made tweaks to the timeline, recorded a lot of events from my work calendar and memory.
-may 27 - fixed line breaks, removed modal fade, added edit and delete buttons from modal, integrated edit function into the main index.php.
-july 3 - fixed cache_miss error by adding redirect headers
-sept 23 - worked on mood calendar chart
-oct 1 - removed the calendar chart because it kills mobile
-feb 10, 2016 - installed option for displaying chart on login screen
-
-to do:
-
-
-done:
-display mood on timeline with color/other
-make items deletable from timeline
-make items viewable from clicking timeline
-display only first characters on timeline
-solve issue with timeline not displaying after first-time login
-password protect
-break up into modules
-*/
-
 include('config.php');
 session_start();
 
