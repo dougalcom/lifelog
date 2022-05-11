@@ -2,15 +2,15 @@
 include('config.php'); 
 include('modules/header.php'); 
 if (isset($_GET['id']) ) { 
-$id = (int) $_GET['id']; 
-if (isset($_POST['submitted'])) { 
-	$timeStamp = date('Y/m/d H:i:s',time());
-foreach($_POST AS $key => $value) { $_POST[$key] = mysql_real_escape_string($value); } 
-$sql = "UPDATE `lifelog` SET  `text` =  '{$_POST['text']}' ,  `mood` =  '{$_POST['mood']}' , `dateRecorded` =  '{$timeStamp}' ,  `dateSet` =  '{$_POST['dateSet']}'   WHERE `id` = '$id' "; 
-mysql_query($sql) or die(mysql_error()); 
-echo (mysql_affected_rows()) ? "Edited row.<br />" : "Nothing changed. <br />"; 
-} 
-$row = mysql_fetch_array ( mysql_query("SELECT * FROM `lifelog` WHERE `id` = '$id' ")); 
+	$id = (int) $_GET['id']; 
+	if (isset($_POST['submitted'])) { 
+		$timeStamp = date('Y/m/d H:i:s',time());
+		$text = mysqli_real_escape_string($link, $_POST['text']);
+		$sql = "UPDATE `lifelog` SET  `text` =  '{$text}' ,  `mood` =  '{$_POST['mood']}' , `dateRecorded` =  '{$timeStamp}' ,  `dateSet` =  '{$_POST['dateSet']}'   WHERE `id` = '$id' "; 
+		mysqli_query($link, $sql) or die(mysqli_error());
+		echo (mysqli_affected_rows($link)) ? "Edited entry.<br />" : "Nothing changed. <br />"; 
+	} 
+	$row = mysqli_fetch_array ( mysqli_query($link, "SELECT * FROM `lifelog` WHERE `id` = '$id' ")); 
 ?>
 <h2>entry <?=$_GET['id']?></h2>
 <form action='' method='POST'> 
