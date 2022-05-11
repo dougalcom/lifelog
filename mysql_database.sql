@@ -25,7 +25,7 @@ CREATE TABLE `lifelog` (
   `id` int(11) NOT NULL,
   `text` mediumtext NOT NULL,
   `mood` tinyint(4) DEFAULT NULL,
-  `dateRecorded` timestamp NOT NULL DEFAULT current_timestamp(),
+  `dateRecorded` timestamp DEFAULT NULL,
   `dateSet` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
