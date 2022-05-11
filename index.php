@@ -1,13 +1,12 @@
 <?
-
 include('config.php');
 session_start();
 
 // LOG OUT
-if($_GET[f] == logout){$_SESSION['auth'] = 1;session_destroy(); header('Location: index.php'); die;}
+if($_GET['f'] == 'logout'){$_SESSION['auth'] = 1;session_destroy(); header('Location: index.php'); die;}
 
 // LOG IN
-if($_GET[f] == login){ // ?f=login
+if($_GET['f'] == 'login'){ // ?f=login
 	if(hash('md5',$_POST['password'],FALSE) == $passhash){ // check password
 		session_start();
 		$_SESSION['auth'] = 1;
@@ -24,24 +23,26 @@ if($_SESSION['auth'] == 1){ // security check -- this bracket carries all the wa
 if ($_POST['f'] == 'add' && isset($_POST['submitted']) == true) {
 	if($_POST['textInput'] == ''){ echo "Did not record. Input blank."; } // catch blank entry
 	else{
-		foreach($_POST AS $key => $value) {
-			$_POST[$key] = mysql_real_escape_string($value);
-			}
-		$textToWrite = $_POST[textInput];
-		$sql = "INSERT INTO `lifelog` ( `text` ,  `mood` ,    `dateSet`  ) VALUES(  '{$textToWrite}' ,  '{$_POST['mood']}' ,     STR_TO_DATE('".$_POST[date]."', '%m/%d/%Y')  ) ";
-		mysql_query($sql) or die(mysql_error());
-		header('Location: index.php');
+		$textToWrite = mysqli_real_escape_string($link, $_POST['textInput']);
+		$sql = "INSERT INTO `lifelog` ( `text` ,  `mood` ,    `dateSet` , `dateRecorded`  ) VALUES(  '".$textToWrite."' ,  '".$_POST['mood']."' ,     STR_TO_DATE('".$_POST[date]."', '%m/%d/%Y'), '".date('Y-m-d H:i:s')."'  ) ";
+		if (mysqli_query($link, $sql)) {
+		  header('Location: index.php');
+		} else {
+		  echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+		}
 	}
 }
 
 // GENERATE LIST OF EVENTS
-$result = mysql_query("SELECT * FROM lifelog");
-$i=1;
-while($row = mysql_fetch_array($result)){
-	// format: {id: 1, content: 'item 1', start: '2014-04-20'}
-	$textToDisplay = '<a data-toggle="modal" data-target="#detail'.$row['id'].'">'.str_replace(array("\r", "\n", "\"", "'"), "", substr($row[text], 0, 80)).'</a>';
-	$eventsOutput .= "{id: ".$i.", content: '".$textToDisplay."', start:'".$row[dateSet]."', type: 'point'},";
-  $i++;
+if ($result = mysqli_query($link, "SELECT * FROM lifelog")) {
+	$i=1;
+	$eventsOutput = '';
+	while($row = mysqli_fetch_array($result)){
+		// format: {id: 1, content: 'item 1', start: '2014-04-20'}
+		$textToDisplay = '<a data-toggle="modal" data-target="#detail'.$row['id'].'">'.str_replace(array("\r", "\n", "\"", "'"), "", substr($row['text'], 0, 80)).'</a>';
+		$eventsOutput .= "{id: ".$i.", content: '".$textToDisplay."', start:'".$row['dateSet']."', type: 'point'},";
+	  $i++;
+	}
 }
 
 include('modules/header.php');
@@ -53,7 +54,7 @@ elseif($_REQUEST['f'] == 'edit' && isset($_POST['submitted']) == false){  // EDI
 	include('modules/edit.php');
 }
 else{
-	if($_SESSION['chart'] == 1){	?>
+?>
 		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 		 <script type="text/javascript">
 		   google.load("visualization", "1.1", {packages:["calendar"]});
@@ -68,8 +69,8 @@ else{
 
 				<?
 				$curYear = date("Y");
-				$result = mysql_query("SELECT * FROM `lifelog` WHERE dateSet > '".$curYear."-01-01' ORDER BY dateSet DESC") or trigger_error(mysql_error());
-				while($row = mysql_fetch_array($result)){
+				$result = mysqli_query($link, "SELECT * FROM `lifelog` WHERE dateSet > '".$curYear."-01-01' ORDER BY dateSet DESC") or trigger_error(mysqli_error());
+				while($row = mysqli_fetch_array($result)){
 					foreach($row AS $key => $value) { $row[$key] = stripslashes($value); }
 					echo "[ new Date('";
 					//echo substr($row[dateSet],0,10);
@@ -94,7 +95,7 @@ else{
 		}
 		 </script>
 		<div id="calendar_basic" class="col-md-12 column visible-lg-* hidden-sm hidden-xs" style="width: 1000px; height: 185px;"></div>
-	<? } ?>
+
 	<? include('modules/table.php'); /*bring in the table*/?>
 
 <?
@@ -102,7 +103,7 @@ else{
 
 include('modules/footer.php');
 
-mysql_close($link);
+mysqli_close($link);
 } // end security
 
 else{ // security check fails, display login field.
