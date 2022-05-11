@@ -2,10 +2,10 @@
 include('config.php'); 
 $id = (int) $_GET['id']; 
 if (isset($_REQUEST['id']) && $_REQUEST['confirmed'] == 1){
-	mysql_query("DELETE FROM `lifelog` WHERE `id` = '$id' ") ; 
-	// echo (mysql_affected_rows()) ? "Row deleted.<br /> " : "Nothing deleted.<br /> "; 
-	header("Location: ".$baseURL);
-	die();
+	mysqli_query($link, "DELETE FROM `lifelog` WHERE `id` = '$id' ") ; 
+	// echo (mysqli_affected_rows($link)) ? "Entry deleted.<br /> " : "Nothing deleted.<br /> "; 
+	header("Location: index.php");
+	// die();
 }
 else{
 	include_once('modules/header.php');
