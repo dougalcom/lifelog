@@ -1,19 +1,19 @@
 <?
+date_default_timezone_set("US/Central");
+
 // THE PASSWORD
-$passhash = "";
- 
+$passhash = ""; // the real password for production
+
 // App base URL
-$baseURL = "#";
+$baseURL = "/";
 
 // DB link setup
-$link = mysql_connect("localhost","username","password");
-if (!$link)
-  {
-  die('Could not connect: ' . mysql_error());
-  }
-mysql_select_db("d_blog", $link);
+$link = mysqli_connect("localhost","user","password","database");
+if (mysqli_connect_errno()) {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+  exit();
+}
 
-// Relative Time Generator from http://stackoverflow.com/questions/11/how-do-i-calculate-relative-time
 define("SECOND", 1);
 define("MINUTE", 60 * SECOND);
 define("HOUR", 60 * MINUTE);
@@ -52,19 +52,12 @@ function str2db($input, $strip_tags=true) {
 		if($strip_tags) {
 			$input = strip_tags($input);
 		}
-		$input = mysql_real_escape_string($input);
+		$input = mysqli_real_escape_string($link, $input);
 		$input = trim($input);
 	}
 	return $input;
 }
 
-/*
-truncText(string, length)
-Sunny Walker, www.miraclesalad.com
- 
-Get a string truncated to a specific length, preserving words where possible.
-*/
- 
 function truncText($string, $length) {
 	$tail = ' ...'; //indicator of truncation
 	
