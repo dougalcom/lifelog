@@ -25,7 +25,6 @@
         <h4 class="form-signin-heading"><span class="glyphicon glyphicon-lock"></span></h4>
         <input name='password' class="form-control" type='password' size='30' maxlength='255' placeholder="password" required autofocus>
         <br/>
-        <input type="checkbox" name="displayChart" value="1"> Chart<br/><br/>
         <button class="btn btn-lg btn-primary btn-block" type="submit">access</button>
       </form>
 
