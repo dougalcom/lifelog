@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>LifeLog</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="An account of Dougal Walker's life">
+	<meta name="description" content="An account of Dougal's life">
 	
 	<link href="css/spacelab.css" rel="stylesheet">
 	<!-- <link href="css/vis.css" rel="stylesheet"> -->
